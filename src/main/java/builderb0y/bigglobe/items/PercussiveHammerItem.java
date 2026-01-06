@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+//ServerWorldEvents removed - using NeoForge events
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

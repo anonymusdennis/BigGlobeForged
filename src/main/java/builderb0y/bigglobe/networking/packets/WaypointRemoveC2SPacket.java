@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.networking.packets;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+//ClientPlayNetworking removed
+import builderb0y.bigglobe.networking.base.PacketSender;
 
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;

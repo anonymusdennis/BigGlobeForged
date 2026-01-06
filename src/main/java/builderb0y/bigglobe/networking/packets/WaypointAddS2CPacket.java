@@ -2,7 +2,7 @@ package builderb0y.bigglobe.networking.packets;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import builderb0y.bigglobe.networking.base.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.client.MinecraftClient;

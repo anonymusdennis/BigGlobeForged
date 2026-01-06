@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import builderb0y.bigglobe.networking.base.PacketSender;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.MinecraftClient;
