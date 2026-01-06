@@ -9,9 +9,9 @@ import java.util.function.Consumer;
 
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -103,7 +103,7 @@ public class ClientState {
 	public boolean dangerousRapids;
 
 	static {
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+		if (FMLEnvironment.dist == Dist.CLIENT) {
 			initClient();
 		}
 	}
@@ -122,7 +122,7 @@ public class ClientState {
 		return world != null ? get(((DimensionalBlockView)(world)).bigglobe_getDimension()) : null;
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static @Nullable ClientState get() {
 		return get(MinecraftClient.getInstance().world);
 	}
@@ -189,7 +189,7 @@ public class ClientState {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
 		ClientWorldEvents.WORLD_CHANGED.register((ClientWorld oldWorld, ClientWorld newWorld) -> {
 			if (newWorld == null) {

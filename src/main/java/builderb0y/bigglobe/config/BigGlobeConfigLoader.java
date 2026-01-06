@@ -20,7 +20,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +47,13 @@ public class BigGlobeConfigLoader {
 	};
 	public static final String CONFIG_FILE_NAME = BigGlobeMod.MODNAME + ".json5";
 	public static final Path
-		CONFIG_FOLDER         = FabricLoader.getInstance().getConfigDir().toAbsolutePath().resolve(BigGlobeMod.MODID),
+		CONFIG_FOLDER         = FMLPaths.CONFIGDIR.get().toAbsolutePath().resolve(BigGlobeMod.MODID),
 		CONFIG_FILE           = CONFIG_FOLDER.resolve(CONFIG_FILE_NAME),
 		TEMPORARY_CONFIG_FILE = CONFIG_FOLDER.resolve(CONFIG_FILE_NAME + ".tmp");
+
+	public static BigGlobeConfig loadConfig() {
+		return loadAndSave();
+	}
 
 	public static BigGlobeConfig load() throws Exception {
 		if (Files.exists(CONFIG_FILE)) {
