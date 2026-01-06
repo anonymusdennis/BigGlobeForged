@@ -3,8 +3,8 @@ package builderb0y.bigglobe.mixins;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -22,7 +22,7 @@ import net.minecraft.world.gen.WorldPreset;
 
 import builderb0y.bigglobe.config.BigGlobeConfig;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 @Mixin(CreateWorldScreen.class)
 public class CreateWorldScreen_MakeBigGlobeTheDefaultWorldType {
 

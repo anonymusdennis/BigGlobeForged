@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.rendering.lods;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import builderb0y.bigglobe.rendering.GLException;
 import builderb0y.bigglobe.rendering.GpuMemory;
@@ -10,7 +10,7 @@ import builderb0y.bigglobe.util.SafeCloseable;
 
 import static org.lwjgl.opengl.GL31C.*;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TextureBuffer extends GpuMemory {
 
 	public static final long MAX_SIZE = (

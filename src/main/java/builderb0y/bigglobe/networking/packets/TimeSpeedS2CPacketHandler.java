@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.networking.packets;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 
 import net.minecraft.network.PacketByteBuf;
@@ -19,13 +19,13 @@ public class TimeSpeedS2CPacketHandler implements S2CPlayPacketHandler<Double> {
 	public static final TimeSpeedS2CPacketHandler INSTANCE = new TimeSpeedS2CPacketHandler();
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public Double decode(PacketByteBuf buffer) {
 		return buffer.readDouble();
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void process(Double data, PacketSender responseSender) {
 		ClientState.forEach((ClientState state) -> state.timeSpeed = data);
 	}

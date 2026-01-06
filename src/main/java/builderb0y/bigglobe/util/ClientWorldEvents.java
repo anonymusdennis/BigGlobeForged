@@ -1,13 +1,13 @@
 package builderb0y.bigglobe.util;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
 import net.minecraft.client.world.ClientWorld;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ClientWorldEvents {
 
 	public static final Event<WorldChanged> WORLD_CHANGED = EventFactory.createArrayBacked(WorldChanged.class, (WorldChanged[] events) -> {
@@ -18,7 +18,7 @@ public class ClientWorldEvents {
 		};
 	});
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static interface WorldChanged {
 
 		public abstract void worldChanged(ClientWorld oldWorld, ClientWorld newWorld);

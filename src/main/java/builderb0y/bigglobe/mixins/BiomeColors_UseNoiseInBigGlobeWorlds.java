@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.mixins;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +15,7 @@ import net.minecraft.world.biome.ColorResolver;
 import builderb0y.bigglobe.ClientState;
 
 @Mixin(BiomeColors.class)
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class BiomeColors_UseNoiseInBigGlobeWorlds {
 
 	@Inject(method = "getColor", at = @At("HEAD"), cancellable = true)

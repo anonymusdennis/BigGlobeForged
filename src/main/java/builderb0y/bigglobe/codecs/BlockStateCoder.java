@@ -14,9 +14,10 @@ import com.mojang.serialization.DynamicOps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -199,7 +200,7 @@ public class BlockStateCoder extends NamedCoder<BlockState> {
 		if (server != null) {
 			return new BetterHardCodedRegistry<>(RegistryVersions.getRegistry(server.getRegistryManager(), RegistryKeys.BLOCK));
 		}
-		else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+		else if (FMLEnvironment.dist == Dist.CLIENT) {
 			return findBlockRegistryClient();
 		}
 		else {
@@ -207,7 +208,7 @@ public class BlockStateCoder extends NamedCoder<BlockState> {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static BetterRegistry<Block> findBlockRegistryClient() {
 		ClientWorld world = MinecraftClient.getInstance().world;
 		return new BetterHardCodedRegistry<>(world != null ? RegistryVersions.getRegistry(world.getRegistryManager(), RegistryKeys.BLOCK) : Registries.BLOCK);
@@ -218,7 +219,7 @@ public class BlockStateCoder extends NamedCoder<BlockState> {
 		if (server != null) {
 			return block.isEnabled(server.getSaveProperties().getEnabledFeatures());
 		}
-		else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+		else if (FMLEnvironment.dist == Dist.CLIENT) {
 			return isEnabledClient(block);
 		}
 		else {
@@ -226,7 +227,7 @@ public class BlockStateCoder extends NamedCoder<BlockState> {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static boolean isEnabledClient(Block block) {
 		ClientWorld world = MinecraftClient.getInstance().world;
 		return world == null || block.isEnabled(world.getEnabledFeatures());

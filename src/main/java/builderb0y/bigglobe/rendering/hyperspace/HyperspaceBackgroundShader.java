@@ -1,14 +1,14 @@
 package builderb0y.bigglobe.rendering.hyperspace;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import builderb0y.autocodec.util.AutoCodecUtil;
 import builderb0y.bigglobe.rendering.ScreenTriangleShader;
 
 import static org.lwjgl.opengl.GL20C.*;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class HyperspaceBackgroundShader extends ScreenTriangleShader {
 
 	public int inverseModelView, inverseProjection, cameraPosition, time;

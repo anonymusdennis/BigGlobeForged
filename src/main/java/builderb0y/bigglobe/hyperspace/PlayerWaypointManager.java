@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.hyperspace;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -52,7 +52,7 @@ public abstract class PlayerWaypointManager extends WaypointManager<PlayerWaypoi
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static PlayerWaypointManager forPlayerClient(PlayerEntity player) {
 		if (player.getClass() == ClientPlayerEntity.class) {
 			return new ClientPlayerWaypointManager((ClientPlayerEntity)(player));

@@ -20,7 +20,8 @@ import javax.imageio.ImageIO;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.HashCommon;
 import it.unimi.dsi.fastutil.objects.*;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -39,7 +40,7 @@ public class DependencyDepthSorter {
 	public static final Hash.Strategy<RegistryEntry<?>> REGISTRY_ENTRY_STRATEGY = HashStrategies.map(HashStrategies.identityStrategy(), UnregisteredObjectException::getKey);
 	public static final Object2ObjectLinkedOpenHashMap<String, CompletableFuture<Void>> saveTasks = new Object2ObjectLinkedOpenHashMap<>();
 	public static final String GRAPH_DIRECTORY_NAME = "bigglobe_dependency_graphs";
-	public static final Path GRAPH_DIRECTORY_PATH = FabricLoader.getInstance().getGameDir().resolve(GRAPH_DIRECTORY_NAME);
+	public static final Path GRAPH_DIRECTORY_PATH = FMLPaths.GAMEDIR.get().resolve(GRAPH_DIRECTORY_NAME);
 	public static final File GRAPH_DIRECTORY_FILE = GRAPH_DIRECTORY_PATH.toFile();
 
 	public final WorldTraits traits;

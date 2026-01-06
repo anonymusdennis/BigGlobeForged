@@ -6,12 +6,13 @@ import java.util.stream.LongStream;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.EndTick;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -88,7 +89,7 @@ public class StringEntity extends Entity {
 	public static final WeakHashMap<World, ArrayList<StringEntity>> TO_TICK = new WeakHashMap<>();
 	static {
 		ServerTickEvents.END_WORLD_TICK.register(StringEntity::onWorldTickEnd);
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+		if (FMLEnvironment.dist == Dist.CLIENT) {
 			initClient();
 		}
 	}
@@ -97,7 +98,7 @@ public class StringEntity extends Entity {
 	//the wrong side, and apparently some JVMs preload lambda method parameter types.
 	//so, I have to use an anonymous class instead of a lambda to prevent crashes.
 	@SuppressWarnings("Convert2Lambda")
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
 		ClientTickEvents.END_CLIENT_TICK.register(new EndTick() {
 

@@ -1,11 +1,11 @@
 package builderb0y.bigglobe.hyperspace;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 #if MC_VERSION >= MC_1_21_11
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public class HyperspaceDimensionEffects {
 
 		public static void init() {
@@ -15,7 +15,7 @@ import net.fabricmc.api.Environment;
 
 #else
 
-	import net.fabricmc.api.EnvType;
+	import net.neoforged.api.distmarker.Dist;
 	import org.jetbrains.annotations.Nullable;
 
 	import net.minecraft.client.render.DimensionEffects;
@@ -23,7 +23,7 @@ import net.fabricmc.api.Environment;
 
 	import builderb0y.bigglobe.BigGlobeMod;
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public class HyperspaceDimensionEffects extends DimensionEffects {
 
 		public HyperspaceDimensionEffects() {

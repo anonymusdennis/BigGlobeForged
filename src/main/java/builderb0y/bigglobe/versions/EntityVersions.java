@@ -2,8 +2,8 @@ package builderb0y.bigglobe.versions;
 
 import java.util.Collections;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -49,7 +49,7 @@ public class EntityVersions {
 		#endif
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static ClientWorld getClientWorld(ClientPlayerEntity player) {
 		#if MC_VERSION >= MC_1_21_9
 			return (ClientWorld)(player.getEntityWorld());

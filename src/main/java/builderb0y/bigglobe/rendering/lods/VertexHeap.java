@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import builderb0y.bigglobe.BigGlobeMod;
@@ -19,7 +19,7 @@ import builderb0y.bigglobe.util.SafeCloseable;
 import static org.lwjgl.opengl.GL32C.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class VertexHeap extends GpuMemory {
 
 	public static final boolean AGGRESSIVE_ASSERTS = false;

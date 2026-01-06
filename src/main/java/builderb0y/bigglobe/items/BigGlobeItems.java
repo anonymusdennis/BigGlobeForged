@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -437,7 +437,7 @@ public class BigGlobeItems {
 		);
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@SuppressWarnings("UnstableApiUsage")
 	public static void initClient() {
 		#if MC_VERSION < MC_1_21_4

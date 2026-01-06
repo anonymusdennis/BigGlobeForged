@@ -13,7 +13,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
@@ -54,7 +55,7 @@ public class DumpRegistriesCommand {
 	}
 
 	public static void dumpEverything(CommandContext<ServerCommandSource> context) {
-		File root = new File(FabricLoader.getInstance().getGameDir().toFile(), "bigglobe_registry_dump");
+		File root = new File(FMLPaths.GAMEDIR.get().toFile(), "bigglobe_registry_dump");
 		delete(root);
 		File registryRoot   = new File(root, "registries");
 		File tagsRoot       = new File(root, "tags");

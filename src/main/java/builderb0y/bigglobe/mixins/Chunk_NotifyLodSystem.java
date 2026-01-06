@@ -1,8 +1,9 @@
 package builderb0y.bigglobe.mixins;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,7 +54,7 @@ public abstract class Chunk_NotifyLodSystem {
 				this.getStatus() == ChunkStatus.FULL &&
 				((Object)(this)) instanceof WorldChunk worldChunk &&
 				worldChunk.getWorld() instanceof ServerWorld serverWorld &&
-				FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT
+				FMLEnvironment.dist == Dist.CLIENT
 			) {
 				bigglobe_doNotify(serverWorld, this.getPos());
 			}
@@ -64,7 +65,7 @@ public abstract class Chunk_NotifyLodSystem {
 	}
 
 	@Unique
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private static void bigglobe_doNotify(ServerWorld world, ChunkPos chunkPos) {
 		LodSystemHolder holder = ImmersivePortalsCompat.getLodSystem(world.getRegistryKey());
 		if (holder != null) {

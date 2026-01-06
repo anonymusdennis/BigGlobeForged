@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.rendering;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import builderb0y.bigglobe.BigGlobeMod;
 import builderb0y.bigglobe.util.SafeCloseable;
@@ -9,7 +9,7 @@ import builderb0y.bigglobe.util.SafeCloseable;
 import static org.lwjgl.opengl.GL11C.GL_TRUE;
 import static org.lwjgl.opengl.GL20C.*;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class Shader implements SafeCloseable {
 
 	public int program, fragmentStage, vertexStage;

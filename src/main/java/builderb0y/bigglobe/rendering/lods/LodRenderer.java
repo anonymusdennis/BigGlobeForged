@@ -3,8 +3,8 @@ package builderb0y.bigglobe.rendering.lods;
 import java.util.Collections;
 import java.util.List;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.*;
 
 import net.minecraft.util.profiler.Profiler;
@@ -16,7 +16,7 @@ import builderb0y.bigglobe.util.SafeCloseable;
 import builderb0y.bigglobe.versions.HeightLimitViewVersions;
 import builderb0y.bigglobe.versions.RenderVersions;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public interface LodRenderer extends SafeCloseable {
 
 	public static class LodRenderState {

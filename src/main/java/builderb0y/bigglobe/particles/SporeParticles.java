@@ -4,8 +4,8 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +36,7 @@ public class SporeParticles {
 		Registry.register(Registries.PARTICLE_TYPE, BigGlobeMod.modID("spore"), Type.INSTANCE);
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
 		ParticleFactoryRegistry.getInstance().register(Type.INSTANCE, ClientFactory::new);
 	}
@@ -106,7 +106,7 @@ public class SporeParticles {
 		#endif
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static class ClientFactory implements ParticleFactory<Effect> {
 
 		public SpriteProvider spriteProvider;

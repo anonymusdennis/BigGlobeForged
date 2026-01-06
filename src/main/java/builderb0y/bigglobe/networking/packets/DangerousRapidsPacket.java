@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.networking.packets;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 
 import net.minecraft.network.PacketByteBuf;
@@ -19,13 +19,13 @@ public class DangerousRapidsPacket implements S2CPlayPacketHandler<Boolean> {
 	public static final DangerousRapidsPacket INSTANCE = new DangerousRapidsPacket();
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public Boolean decode(PacketByteBuf buffer) {
 		return buffer.readBoolean();
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void process(Boolean data, PacketSender responseSender) {
 		ClientState.forEach((ClientState state) -> state.dangerousRapids = data);
 	}

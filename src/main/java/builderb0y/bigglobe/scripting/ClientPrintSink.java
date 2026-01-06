@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.scripting;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 
 import builderb0y.scripting.util.PrintSink;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ClientPrintSink implements PrintSink {
 
 	@Override

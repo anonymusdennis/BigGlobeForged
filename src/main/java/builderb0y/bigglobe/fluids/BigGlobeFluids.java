@@ -1,14 +1,17 @@
 package builderb0y.bigglobe.fluids;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 
 import builderb0y.bigglobe.BigGlobeMod;
 
@@ -20,16 +23,10 @@ public class BigGlobeFluids {
 
 	public static void init() {}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
-		FluidRenderHandlerRegistry.INSTANCE.register(
-			SOUL_LAVA,
-			FLOWING_SOUL_LAVA,
-			new SimpleFluidRenderHandler(
-				BigGlobeMod.modID("block/soul_lava_still"),
-				BigGlobeMod.modID("block/soul_lava_flowing")
-			)
-		);
+		// Fluid rendering in NeoForge is handled differently
+		// The fluid type extensions handle the textures
 	}
 
 	public static <F extends Fluid> F register(String name, F fluid) {

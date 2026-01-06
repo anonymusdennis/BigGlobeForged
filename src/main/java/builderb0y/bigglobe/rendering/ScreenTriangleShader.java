@@ -1,11 +1,11 @@
 package builderb0y.bigglobe.rendering;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import builderb0y.autocodec.util.AutoCodecUtil;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ScreenTriangleShader extends Shader {
 
 	public ScreenTriangleShader() {

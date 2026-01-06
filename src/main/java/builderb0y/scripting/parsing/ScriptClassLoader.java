@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.commons.io.file.PathUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +59,7 @@ public class ScriptClassLoader extends ClassLoader {
 
 	public static @Nullable Path initDumpDirectory(String enabledProperty, String directoryName) {
 		if (Boolean.getBoolean(enabledProperty)) {
-			Path classDumpDirectory = FabricLoader.getInstance().getGameDir().resolve(directoryName);
+			Path classDumpDirectory = FMLPaths.GAMEDIR.get().resolve(directoryName);
 			if (Files.isDirectory(classDumpDirectory)) try {
 				PathUtils.cleanDirectory(classDumpDirectory);
 			}
