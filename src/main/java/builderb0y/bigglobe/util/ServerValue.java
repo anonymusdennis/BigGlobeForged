@@ -1,20 +1,21 @@
 package builderb0y.bigglobe.util;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStopped;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 
 import net.minecraft.server.MinecraftServer;
 
-public class ServerValue<T> implements ServerStopped, Supplier<T> {
+public class ServerValue<T> implements Consumer<ServerStoppedEvent>, Supplier<T> {
 
 	public final Supplier<T> supplier;
 	public T value;
 
 	public ServerValue(Supplier<T> supplier) {
 		this.supplier = supplier;
-		ServerLifecycleEvents.SERVER_STOPPED.register(this);
+		NeoForge.EVENT_BUS.addListener(this);
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class ServerValue<T> implements ServerStopped, Supplier<T> {
 	}
 
 	@Override
-	public void onServerStopped(MinecraftServer server) {
+	public void accept(ServerStoppedEvent event) {
 		this.value = null;
 	}
 }
