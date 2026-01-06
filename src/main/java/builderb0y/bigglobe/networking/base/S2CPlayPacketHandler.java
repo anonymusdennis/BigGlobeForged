@@ -1,20 +1,19 @@
 package builderb0y.bigglobe.networking.base;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import net.minecraft.network.PacketByteBuf;
 
 public interface S2CPlayPacketHandler<T> extends PacketHandler {
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public abstract T decode(
 		PacketByteBuf buffer
 	);
 
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public abstract void process(
 		T data,
 		PacketSender responseSender

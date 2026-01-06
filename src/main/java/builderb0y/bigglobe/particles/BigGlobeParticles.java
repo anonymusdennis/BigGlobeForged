@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.particles;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class BigGlobeParticles {
 
@@ -9,7 +9,7 @@ public class BigGlobeParticles {
 		SporeParticles.init();
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
 		SporeParticles.initClient();
 	}

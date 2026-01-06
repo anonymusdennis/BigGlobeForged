@@ -2,24 +2,24 @@ package builderb0y.bigglobe.networking.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.api.EnvironmentInterface;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -27,22 +27,7 @@ import builderb0y.bigglobe.BigGlobeMod;
 import builderb0y.bigglobe.networking.packets.*;
 import builderb0y.bigglobe.versions.EntityVersions;
 
-#if MC_VERSION >= MC_1_20_5
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-#endif
-
-#if MC_VERSION >= MC_1_20_5
-	@EnvironmentInterface(value = EnvType.CLIENT, itf = ClientPlayNetworking.PlayPayloadHandler.class)
-	public class BigGlobeNetwork implements
-		ClientPlayNetworking.PlayPayloadHandler<BigGlobePayload>,
-		ServerPlayNetworking.PlayPayloadHandler<BigGlobePayload>
-#else
-	@EnvironmentInterface(value = EnvType.CLIENT, itf = ClientPlayNetworking.PlayChannelHandler.class)
-	public class BigGlobeNetwork implements
-		ClientPlayNetworking.PlayChannelHandler,
-		ServerPlayNetworking.PlayChannelHandler
-#endif
-{
+public class BigGlobeNetwork {
 
 	public static final Identifier NETWORK_ID = BigGlobeMod.modID("network");
 	public static final Logger LOGGER = LoggerFactory.getLogger(BigGlobeMod.MODNAME + "/Network");
@@ -88,117 +73,96 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 		else return null;
 	}
 
-	#if MC_VERSION >= MC_1_20_5
-
-		@Override
-		@Environment(EnvType.CLIENT)
-		public void receive(BigGlobePayload payload, ClientPlayNetworking.Context context) {
-			byte id = payload.buffer().readByte();
-			if (this.getHandler(id) instanceof S2CPlayPacketHandler<?> packetHandler) {
-				this.doReceive(context.client(), payload.buffer(), context.responseSender(), packetHandler);
-			}
-			else {
-				LOGGER.warn("No server to client play packet handler registered for ID " + Byte.toUnsignedInt(id));
-			}
+	public void handleClientPayload(BigGlobePayload payload, IPayloadContext context) {
+		byte id = payload.buffer().readByte();
+		if (this.getHandler(id) instanceof S2CPlayPacketHandler<?> packetHandler) {
+			this.doReceiveOnClient(context, payload.buffer(), packetHandler);
 		}
-
-		@Override
-		public void receive(BigGlobePayload payload, ServerPlayNetworking.Context context) {
-			byte id = payload.buffer().readByte();
-			if (this.getHandler(id) instanceof C2SPlayPacketHandler<?> packetHandler) {
-				this.doReceive(EntityVersions.getServer(context.player()), context.player(), payload.buffer(), context.responseSender(), packetHandler);
-			}
-			else {
-				LOGGER.warn("No client to server play packet handler registered for ID " + Byte.toUnsignedInt(id));
-			}
+		else {
+			LOGGER.warn("No server to client play packet handler registered for ID " + Byte.toUnsignedInt(id));
 		}
-	#else
-
-		@Override
-		@Environment(EnvType.CLIENT)
-		public void receive(
-			MinecraftClient client,
-			ClientPlayNetworkHandler networkHandler,
-			PacketByteBuf buffer,
-			PacketSender responseSender
-		) {
-			byte id = buffer.readByte();
-			if (this.getHandler(id) instanceof S2CPlayPacketHandler<?> packetHandler) {
-				this.doReceive(client, buffer, responseSender, packetHandler);
-			}
-			else {
-				LOGGER.warn("No server to client play packet handler registered for ID " + Byte.toUnsignedInt(id));
-			}
-		}
-
-		@Override
-		public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler networkHandler, PacketByteBuf buffer, PacketSender responseSender) {
-			byte id = buffer.readByte();
-			if (this.getHandler(id) instanceof C2SPlayPacketHandler<?> packetHandler) {
-				this.doReceive(server, player, buffer, responseSender, packetHandler);
-			}
-			else {
-				LOGGER.warn("No client to server play packet handler registered for ID " + Byte.toUnsignedInt(id));
-			}
-		}
-	#endif
-
-	@Environment(EnvType.CLIENT)
-	public <T> void doReceive(
-		MinecraftClient client,
-		PacketByteBuf buffer,
-		PacketSender responseSender,
-		S2CPlayPacketHandler<T> handler
-	) {
-		#if MC_VERSION >= MC_1_20_5
-			handler.process(handler.decode(buffer), responseSender);
-		#else
-			T data = handler.decode(buffer);
-			client.executeSync(() -> {
-				handler.process(data, responseSender);
-			});
-		#endif
 	}
 
-	public <T> void doReceive(
+	public void handleServerPayload(BigGlobePayload payload, IPayloadContext context) {
+		byte id = payload.buffer().readByte();
+		if (this.getHandler(id) instanceof C2SPlayPacketHandler<?> packetHandler) {
+			ServerPlayerEntity player = (ServerPlayerEntity) context.player();
+			this.doReceiveOnServer(EntityVersions.getServer(player), player, payload.buffer(), context, packetHandler);
+		}
+		else {
+			LOGGER.warn("No client to server play packet handler registered for ID " + Byte.toUnsignedInt(id));
+		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public <T> void doReceiveOnClient(
+		IPayloadContext context,
+		PacketByteBuf buffer,
+		S2CPlayPacketHandler<T> handler
+	) {
+		handler.process(handler.decode(buffer), new NeoForgePacketSender(context));
+	}
+
+	public <T> void doReceiveOnServer(
 		MinecraftServer server,
 		ServerPlayerEntity player,
 		PacketByteBuf buffer,
-		PacketSender responseSender,
+		IPayloadContext context,
 		C2SPlayPacketHandler<T> handler
 	) {
-		#if MC_VERSION >= MC_1_20_5
-			handler.process(player, handler.decode(player, buffer), responseSender);
-		#else
-			T data = handler.decode(player, buffer);
-			server.executeSync(() -> {
-				handler.process(player, data, responseSender);
-			});
-		#endif
+		handler.process(player, handler.decode(player, buffer), new NeoForgePacketSender(context));
 	}
 
 	public void sendToPlayer(ServerPlayerEntity player, PacketByteBuf buffer) {
-		ServerPlayNetworking.send(player, #if MC_VERSION >= MC_1_20_5 new BigGlobePayload(buffer) #else NETWORK_ID, buffer #endif);
+		PacketDistributor.sendToPlayer(player, new BigGlobePayload(buffer));
 	}
 
 	public void sendToServer(PacketByteBuf buffer) {
-		ClientPlayNetworking.send(#if MC_VERSION >= MC_1_20_5 new BigGlobePayload(buffer) #else NETWORK_ID, buffer #endif);
+		PacketDistributor.sendToServer(new BigGlobePayload(buffer));
 	}
 
 	public static void init() {
 		LOGGER.debug("Initializing common network...");
-		#if MC_VERSION >= MC_1_20_5
-		PayloadTypeRegistry.playC2S().register(BigGlobePayload.ID, BigGlobePayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(BigGlobePayload.ID, BigGlobePayload.CODEC);
-		#endif
-		ServerPlayNetworking.registerGlobalReceiver(#if MC_VERSION >= MC_1_20_5 BigGlobePayload.ID #else NETWORK_ID #endif, INSTANCE);
+		// Network registration is handled by the event below
 		LOGGER.debug("Done initializing common network.");
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
 		LOGGER.debug("Initializing client network...");
-		ClientPlayNetworking.registerGlobalReceiver(#if MC_VERSION >= MC_1_20_5 BigGlobePayload.ID #else NETWORK_ID #endif, INSTANCE);
+		// Client network registration is handled by the event
 		LOGGER.debug("Done initializing client network.");
+	}
+
+	@SubscribeEvent
+	public static void onRegisterPayloadHandlers(RegisterPayloadHandlersEvent event) {
+		PayloadRegistrar registrar = event.registrar(BigGlobeMod.MODID);
+		registrar.playBidirectional(
+			BigGlobePayload.ID,
+			BigGlobePayload.CODEC,
+			(payload, context) -> {
+				if (context.flow().isClientbound()) {
+					INSTANCE.handleClientPayload(payload, context);
+				} else {
+					INSTANCE.handleServerPayload(payload, context);
+				}
+			}
+		);
+	}
+
+	/**
+	 * Wrapper to adapt NeoForge's IPayloadContext to the PacketSender interface
+	 */
+	public static class NeoForgePacketSender implements PacketSender {
+		private final IPayloadContext context;
+
+		public NeoForgePacketSender(IPayloadContext context) {
+			this.context = context;
+		}
+
+		@Override
+		public void sendPacket(PacketByteBuf buffer) {
+			this.context.reply(new BigGlobePayload(buffer));
+		}
 	}
 }
