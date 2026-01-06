@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -27,6 +28,7 @@ import builderb0y.bigglobe.BigGlobeMod;
 import builderb0y.bigglobe.networking.packets.*;
 import builderb0y.bigglobe.versions.EntityVersions;
 
+@EventBusSubscriber(modid = BigGlobeMod.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class BigGlobeNetwork {
 
 	public static final Identifier NETWORK_ID = BigGlobeMod.modID("network");

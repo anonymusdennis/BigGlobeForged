@@ -16,10 +16,3 @@ public interface PacketHandler {
 		return buffer;
 	}
 }
-
-/**
- * Interface for sending packets back as a response
- */
-interface PacketSender {
-	void sendPacket(PacketByteBuf buffer);
-}

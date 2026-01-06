@@ -227,6 +227,11 @@ public class BigGlobeMod {
 		return IdentifierVersions.vanilla(path);
 	}
 
+	/**
+	 * Creates a new registry. Note: In NeoForge, custom registries should be
+	 * registered via NewRegistryEvent or DeferredRegister for full functionality.
+	 * This method creates a simple registry for internal use.
+	 */
 	public static <T> SimpleRegistry<T> newRegistry(RegistryKey<Registry<T>> key) {
 		return new SimpleRegistry<>(key, Lifecycle.experimental());
 	}

@@ -31,7 +31,7 @@ import builderb0y.bigglobe.versions.RegistryVersions;
 public class DevDebugCommand {
 
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		if (!!FMLEnvironment.production) return;
+		if (FMLEnvironment.production) return;
 		dispatcher.register(
 			CommandManager
 			.literal(BigGlobeMod.MODID + ":debug")
