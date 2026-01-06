@@ -4,9 +4,10 @@ import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
 import java.util.function.Predicate;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
@@ -112,9 +113,9 @@ public class SlingshotItem extends RangedWeaponItem
 
 	public static final StackWalker STACK_WALKER = StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE);
 	/** this is a client-side class, so we need to be extra careful to not load it on the server. */
-	public static final Class<?> PLAYER_ENTITY_RENDERER = FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? getPlayerEntityRenderer() : null;
+	public static final Class<?> PLAYER_ENTITY_RENDERER = FMLEnvironment.dist == Dist.CLIENT ? getPlayerEntityRenderer() : null;
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static Class<?> getPlayerEntityRenderer() {
 		return PlayerEntityRenderer.class;
 	}

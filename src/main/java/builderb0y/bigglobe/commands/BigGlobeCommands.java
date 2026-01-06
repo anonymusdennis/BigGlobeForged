@@ -4,19 +4,18 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import net.minecraft.server.command.ServerCommandSource;
 
 import builderb0y.bigglobe.BigGlobeMod;
-import builderb0y.bigglobe.mixins.BigGlobeMixinPlugin;
 
 public class BigGlobeCommands {
 
@@ -40,8 +39,12 @@ public class BigGlobeCommands {
 
 	public static void init() {
 		BigGlobeMod.LOGGER.debug("Registering command event handler...");
-		CommandRegistrationCallback.EVENT.register(BigGlobeCommands::registerCommands);
+		NeoForge.EVENT_BUS.addListener(BigGlobeCommands::onRegisterCommands);
 		BigGlobeMod.LOGGER.debug("Done registering command event handler.");
+	}
+
+	public static void onRegisterCommands(RegisterCommandsEvent event) {
+		registerCommands(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection());
 	}
 
 	public static void registerCommands(
@@ -59,21 +62,18 @@ public class BigGlobeCommands {
 		BigGlobeMod.LOGGER.debug("Done registering commands to dispatcher.");
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
 		BigGlobeMod.LOGGER.debug("Registering client command event handler...");
-		ClientCommandRegistrationCallback.EVENT.register(BigGlobeCommands::registerClientCommands);
+		NeoForge.EVENT_BUS.addListener(BigGlobeCommands::onRegisterClientCommands);
 		BigGlobeMod.LOGGER.debug("Done registering client command event handler.");
 	}
 
-	@Environment(EnvType.CLIENT)
-	public static void registerClientCommands(
-		CommandDispatcher<FabricClientCommandSource> dispatcher,
-		CommandRegistryAccess registryAccess
-	) {
+	@OnlyIn(Dist.CLIENT)
+	public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
 		BigGlobeMod.LOGGER.debug("Registering client commands to dispatcher...");
-		DisplayColumnsClientCommand.register(dispatcher);
-		SearchF3ClientCommand.register(dispatcher);
+		DisplayColumnsClientCommand.register(event.getDispatcher());
+		SearchF3ClientCommand.register(event.getDispatcher());
 		BigGlobeMod.LOGGER.debug("Done registering client commands to dispatcher.");
 	}
 }

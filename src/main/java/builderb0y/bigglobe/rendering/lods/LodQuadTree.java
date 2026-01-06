@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.rendering.lods;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.math.MathHelper;
@@ -9,7 +9,7 @@ import net.minecraft.util.math.MathHelper;
 import builderb0y.bigglobe.rendering.ResourceTracker;
 import builderb0y.bigglobe.util.SafeCloseable;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class LodQuadTree implements SafeCloseable {
 
 	public static final int

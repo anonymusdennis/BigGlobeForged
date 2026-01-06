@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.rendering;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 
 import net.minecraft.util.math.Vec3d;
@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import builderb0y.bigglobe.math.BigGlobeMath;
 import builderb0y.bigglobe.versions.RenderVersions;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class Matrices {
 
 	public static double

@@ -4,9 +4,11 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.particle.Particle;
@@ -30,15 +32,22 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.util.math.random.Random;
 #endif
 
+@EventBusSubscriber(modid = BigGlobeMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class SporeParticles {
 
 	public static void init() {
 		Registry.register(Registries.PARTICLE_TYPE, BigGlobeMod.modID("spore"), Type.INSTANCE);
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
-		ParticleFactoryRegistry.getInstance().register(Type.INSTANCE, ClientFactory::new);
+		// Particle factory registration is handled via event
+	}
+
+	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event) {
+		event.registerSpriteSet(Type.INSTANCE, ClientFactory::new);
 	}
 
 	public static class Effect implements ParticleEffect {
@@ -106,7 +115,7 @@ public class SporeParticles {
 		#endif
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static class ClientFactory implements ParticleFactory<Effect> {
 
 		public SpriteProvider spriteProvider;

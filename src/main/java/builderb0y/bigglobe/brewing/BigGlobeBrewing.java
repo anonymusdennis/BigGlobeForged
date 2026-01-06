@@ -1,5 +1,9 @@
 package builderb0y.bigglobe.brewing;
 
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
@@ -16,10 +20,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 
 import builderb0y.bigglobe.BigGlobeMod;
 import builderb0y.bigglobe.items.BigGlobeItems;
-
-#if MC_VERSION >= MC_1_20_5
-import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
-#endif
 
 public class BigGlobeBrewing {
 
@@ -60,23 +60,17 @@ public class BigGlobeBrewing {
 	static { BigGlobeMod.LOGGER.debug("Done registering potions."); }
 
 	public static void init() {
-		#if MC_VERSION >= MC_1_20_5
-			FabricBrewingRecipeRegistryBuilder.BUILD.register((BrewingRecipeRegistry.Builder builder) -> {
-				BigGlobeMod.LOGGER.debug("Registering potion recipes...");
-				builder.registerPotionRecipe(Potions.AWKWARD, BigGlobeItems.ASH, WITHER);
-				builder.registerPotionRecipe(WITHER, Items.REDSTONE, LONG_WITHER);
-				builder.registerPotionRecipe(WITHER, Items.GLOWSTONE_DUST, STRONG_WITHER);
-				builder.registerPotionRecipe(Potions.WATER, BigGlobeItems.CHORUS_SPORE, Potions.AWKWARD);
-				BigGlobeMod.LOGGER.debug("Done registering potion recipes.");
-			});
-		#else
-			BigGlobeMod.LOGGER.debug("Registering potion recipes...");
-			BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, BigGlobeItems.ASH, WITHER);
-			BrewingRecipeRegistry.registerPotionRecipe(WITHER, Items.REDSTONE, LONG_WITHER);
-			BrewingRecipeRegistry.registerPotionRecipe(WITHER, Items.GLOWSTONE_DUST, STRONG_WITHER);
-			BrewingRecipeRegistry.registerPotionRecipe(Potions.WATER, BigGlobeItems.CHORUS_SPORE, Potions.AWKWARD);
-			BigGlobeMod.LOGGER.debug("Done registering potion recipes.");
-		#endif
+		NeoForge.EVENT_BUS.addListener(BigGlobeBrewing::onRegisterBrewingRecipes);
+	}
+
+	public static void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
+		BigGlobeMod.LOGGER.debug("Registering potion recipes...");
+		BrewingRecipeRegistry.Builder builder = event.getBuilder();
+		builder.registerPotionRecipe(Potions.AWKWARD, BigGlobeItems.ASH, WITHER);
+		builder.registerPotionRecipe(WITHER, Items.REDSTONE, LONG_WITHER);
+		builder.registerPotionRecipe(WITHER, Items.GLOWSTONE_DUST, STRONG_WITHER);
+		builder.registerPotionRecipe(Potions.WATER, BigGlobeItems.CHORUS_SPORE, Potions.AWKWARD);
+		BigGlobeMod.LOGGER.debug("Done registering potion recipes.");
 	}
 
 	public static RegistryEntry<StatusEffect> registerEffect(String name, StatusEffect effect) {

@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.rendering.lods;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -29,7 +29,7 @@ import builderb0y.bigglobe.rendering.lods.LodRenderer.MeshUploader;
 import builderb0y.bigglobe.math.BigGlobeMath;
 import builderb0y.bigglobe.mixinInterfaces.LodSystemHolder;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class LodSystem implements SafeCloseable {
 
 	static {

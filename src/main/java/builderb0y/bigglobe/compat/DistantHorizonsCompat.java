@@ -13,7 +13,8 @@ import com.seibel.distanthorizons.api.methods.events.abstractEvents.DhApiLevelLo
 import com.seibel.distanthorizons.api.methods.events.sharedParameterObjects.DhApiEventParam;
 import com.seibel.distanthorizons.api.objects.data.DhApiChunk;
 import com.seibel.distanthorizons.api.objects.data.DhApiTerrainDataPoint;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import net.minecraft.server.world.ServerWorld;
 

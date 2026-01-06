@@ -2,8 +2,8 @@ package builderb0y.bigglobe.rendering.waypoints;
 
 import java.util.TreeSet;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.MinecraftClient;
@@ -191,7 +191,7 @@ public class WaypointWarpRenderer implements SafeCloseable {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static record VisibleWaypointData(double x, double y, double z, float age, float health) implements Comparable<VisibleWaypointData> {
 
 		public double squareDistanceToCamera() {

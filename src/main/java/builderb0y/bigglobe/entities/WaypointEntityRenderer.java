@@ -1,8 +1,9 @@
 package builderb0y.bigglobe.entities;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -19,7 +20,7 @@ import builderb0y.bigglobe.entities.WaypointEntity.Orbit;
 import builderb0y.bigglobe.math.BigGlobeMath;
 import builderb0y.bigglobe.rendering.waypoints.WaypointWarpRenderer;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class WaypointEntityRenderer extends BigGlobeEntityRenderer<WaypointEntity, WaypointEntityRenderer.State> {
 
 	public static final Identifier TEXTURE = BigGlobeMod.mcID("textures/particle/flash.png");

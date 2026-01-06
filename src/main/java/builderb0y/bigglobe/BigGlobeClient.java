@@ -1,8 +1,10 @@
 package builderb0y.bigglobe;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 import builderb0y.bigglobe.blocks.BigGlobeBlocks;
 import builderb0y.bigglobe.commands.BigGlobeCommands;
@@ -17,11 +19,12 @@ import builderb0y.bigglobe.rendering.waypoints.WaypointWarpRenderer;
 import builderb0y.bigglobe.scripting.ClientPrintSink;
 import builderb0y.scripting.environments.BuiltinScriptEnvironment;
 
-@Environment(EnvType.CLIENT)
-public class BigGlobeClient implements ClientModInitializer {
+@OnlyIn(Dist.CLIENT)
+@EventBusSubscriber(modid = BigGlobeMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public class BigGlobeClient {
 
-	@Override
-	public void onInitializeClient() {
+	@SubscribeEvent
+	public static void onClientSetup(FMLClientSetupEvent event) {
 		BigGlobeMod.LOGGER.info("Initializing client...");
 		BigGlobeFluids.initClient();
 		BigGlobeBlocks.initClient();

@@ -6,9 +6,9 @@ import java.util.function.ToIntFunction;
 
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import builderb0y.bigglobe.networking.base.PacketSender;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -100,7 +100,7 @@ public class WaypointListS2CPacket implements S2CPlayPacketHandler<List<SyncedWa
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public List<SyncedWaypointData> decode(PacketByteBuf buffer) {
 		boolean isHyperspace = buffer.readBoolean();
 		int worldCount = buffer.readVarInt();
@@ -125,7 +125,7 @@ public class WaypointListS2CPacket implements S2CPlayPacketHandler<List<SyncedWa
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void process(List<SyncedWaypointData> waypoints, PacketSender responseSender) {
 		ClientPlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null) {

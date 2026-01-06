@@ -1,8 +1,8 @@
 package builderb0y.bigglobe.networking.packets;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import builderb0y.bigglobe.networking.base.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.client.MinecraftClient;
@@ -67,7 +67,7 @@ public class WaypointAddS2CPacket implements S2CPlayPacketHandler<SyncedWaypoint
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public SyncedWaypointData decode(PacketByteBuf buffer) {
 		int flags = buffer.readByte();
 		boolean owned = (flags & HAS_OWNER) != 0;
@@ -82,7 +82,7 @@ public class WaypointAddS2CPacket implements S2CPlayPacketHandler<SyncedWaypoint
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void process(SyncedWaypointData waypoint, PacketSender responseSender) {
 		ClientPlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null) {

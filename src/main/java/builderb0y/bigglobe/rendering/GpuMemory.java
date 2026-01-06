@@ -1,14 +1,14 @@
 package builderb0y.bigglobe.rendering;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import builderb0y.autocodec.util.AutoCodecUtil;
 import builderb0y.bigglobe.util.SafeCloseable;
 
 import static org.lwjgl.opengl.GL15C.*;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public abstract class GpuMemory implements SafeCloseable {
 
 	public Thread thread;

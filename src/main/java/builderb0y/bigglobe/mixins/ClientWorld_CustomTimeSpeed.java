@@ -2,8 +2,8 @@ package builderb0y.bigglobe.mixins;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import builderb0y.bigglobe.ClientState;
 
 @Mixin(ClientWorld.class)
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public abstract class ClientWorld_CustomTimeSpeed extends World {
 
 	@Unique

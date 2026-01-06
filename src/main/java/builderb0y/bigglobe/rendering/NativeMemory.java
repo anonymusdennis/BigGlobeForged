@@ -2,14 +2,14 @@ package builderb0y.bigglobe.rendering;
 
 import java.util.Objects;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import builderb0y.bigglobe.util.SafeCloseable;
 
 import static org.lwjgl.system.MemoryUtil.*;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class NativeMemory implements SafeCloseable {
 
 	public long address;

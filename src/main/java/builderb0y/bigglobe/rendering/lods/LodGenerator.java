@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -63,7 +63,7 @@ import builderb0y.bigglobe.versions.BlockStateVersions;
 import builderb0y.bigglobe.versions.DirectionVersions;
 import builderb0y.bigglobe.versions.RegistryVersions;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class LodGenerator implements SafeCloseable {
 
 	public static final int
@@ -870,7 +870,7 @@ public class LodGenerator implements SafeCloseable {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static class ColumnBlockView implements BlockRenderView {
 
 		public final ClientGeneratorParams generator;

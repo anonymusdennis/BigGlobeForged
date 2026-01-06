@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.entities;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -17,7 +17,7 @@ import builderb0y.bigglobe.BigGlobeMod;
 	import net.minecraft.util.math.BlockPos;
 #endif
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TorchArrowRenderer extends ProjectileEntityRenderer<TorchArrowEntity #if MC_VERSION >= MC_1_21_2 , ProjectileEntityRenderState #endif> {
 
 	public static final Identifier TEXTURE = BigGlobeMod.modID("textures/entity/projectiles/torch_arrow.png");

@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.jetbrains.annotations.Nullable;
 import qouteall.dimlib.api.DimensionAPI;
@@ -45,7 +45,7 @@ public class ImmersivePortalsCompat {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void initClient() {
 		if (InstalledMods.DIMLIB) try {
 			DimLibCode.initClient();
@@ -76,7 +76,7 @@ public class ImmersivePortalsCompat {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static @Nullable LodSystemHolder getLodSystem(RegistryKey<World> dimensionKey) {
 		if (InstalledMods.IMMERSIVE_PORTALS) try {
 			return IPCode.getLodSystem(dimensionKey);
@@ -98,7 +98,7 @@ public class ImmersivePortalsCompat {
 
 		}
 
-		@Environment(EnvType.CLIENT)
+		@OnlyIn(Dist.CLIENT)
 		public static void initClient() {
 			DimensionAPI.CLIENT_DIMENSION_UPDATE_EVENT.register(ClientState::retain);
 		}
@@ -146,7 +146,7 @@ public class ImmersivePortalsCompat {
 			});
 		}
 
-		@Environment(EnvType.CLIENT)
+		@OnlyIn(Dist.CLIENT)
 		public static void initClient() {
 
 		}
@@ -157,7 +157,7 @@ public class ImmersivePortalsCompat {
 			}
 		}
 
-		@Environment(EnvType.CLIENT)
+		@OnlyIn(Dist.CLIENT)
 		public static @Nullable LodSystemHolder getLodSystem(RegistryKey<World> dimensionKey) {
 			return LodSystemHolder.of(ClientWorldLoader.WORLD_RENDERER_MAP.get(dimensionKey));
 		}

@@ -2,7 +2,7 @@ package builderb0y.bigglobe.networking.packets;
 
 import java.util.Objects;
 
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import builderb0y.bigglobe.networking.base.PacketSender;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

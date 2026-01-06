@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.hyperspace;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -19,7 +19,7 @@ when waypoints are added or removed from this view (and syncing is enabled),
 an entity will be summoned or discarded in the client's world.
 entities are also added when a chunk containing a waypoint is loaded on the client.
 */
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ClientPlayerWaypointManager extends PlayerWaypointManager {
 
 	public ClientPlayerWaypointManager(ClientPlayerEntity player) {

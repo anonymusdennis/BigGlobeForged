@@ -10,7 +10,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.function.Predicate;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
@@ -39,7 +40,7 @@ public class BigGlobeMixinPlugin implements IMixinConfigPlugin {
 		for (String mixin : this.unconfigurable) {
 			if (this.defaults.containsKey(mixin)) {
 				String message = "Mixin " + mixin + " is both configurable and unconfigurable";
-				if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+				if (!FMLEnvironment.production) {
 					throw new RuntimeException(message);
 				}
 				else {
@@ -186,7 +187,7 @@ public class BigGlobeMixinPlugin implements IMixinConfigPlugin {
 	}
 
 	public Properties loadProperties() {
-		Path bigGlobeConfigFolder = FabricLoader.getInstance().getConfigDir().resolve("bigglobe");
+		Path bigGlobeConfigFolder = FMLPaths.CONFIGDIR.get().resolve("bigglobe");
 		Path path = bigGlobeConfigFolder.resolve("mixins.properties");
 		Path tmp  = bigGlobeConfigFolder.resolve("mixins.tmp");
 		Properties properties = new Properties();
@@ -363,7 +364,7 @@ public class BigGlobeMixinPlugin implements IMixinConfigPlugin {
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 		if (!this.defaults.containsKey(mixinClassName) && !this.unconfigurable.contains(mixinClassName)) {
 			String message = "Mixin " + mixinClassName + " does not specify its configurability!";
-			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			if (!FMLEnvironment.production) {
 				throw new IllegalStateException(message);
 			}
 			else {

@@ -6,9 +6,9 @@ import java.util.zip.GZIPOutputStream;
 
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import builderb0y.bigglobe.networking.base.PacketSender;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.MinecraftClient;
@@ -68,7 +68,7 @@ public class SettingsSyncS2CPacketHandler implements S2CPlayPacketHandler<Settin
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public @Nullable Receiving decode(PacketByteBuf buffer) {
 		try {
 			GZIPInputStream stream = new GZIPInputStream(new ByteBufInputStream(buffer));
@@ -90,7 +90,7 @@ public class SettingsSyncS2CPacketHandler implements S2CPlayPacketHandler<Settin
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void process(Receiving receiving, PacketSender responseSender) {
 		ClientWorld world = MinecraftClient.getInstance().world;
 		if (world != null) {

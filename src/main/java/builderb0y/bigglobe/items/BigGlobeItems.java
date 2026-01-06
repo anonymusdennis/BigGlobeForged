@@ -8,12 +8,12 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+//import for color providers removed - NeoForge uses events
+//import for item groups removed - NeoForge uses events
+//import for item groups removed - NeoForge uses events
+//import for composting removed - NeoForge uses data
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.AbstractBlock;
@@ -47,12 +47,12 @@ import builderb0y.bigglobe.versions.RegistryVersions;
 
 #if MC_VERSION >= MC_1_21_0
 	import net.minecraft.world.biome.GrassColors;
-	import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-	import net.fabricmc.fabric.api.loot.v3.LootTableSource;
+	//import for loot removed - NeoForge uses events
+	//import for loot removed
 #else
 	import net.minecraft.client.color.world.GrassColors;
-	import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
-	import net.fabricmc.fabric.api.loot.v2.LootTableSource;
+	//import for loot removed - NeoForge uses events
+	//import for loot removed
 #endif
 
 #if MC_VERSION < MC_1_20_5
@@ -437,7 +437,7 @@ public class BigGlobeItems {
 		);
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@SuppressWarnings("UnstableApiUsage")
 	public static void initClient() {
 		#if MC_VERSION < MC_1_21_4

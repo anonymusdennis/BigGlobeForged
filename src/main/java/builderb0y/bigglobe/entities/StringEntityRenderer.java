@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.entities;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -21,7 +21,7 @@ import builderb0y.bigglobe.math.BigGlobeMath;
 import builderb0y.bigglobe.math.Interpolator;
 import builderb0y.bigglobe.versions.EntityVersions;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class StringEntityRenderer extends BigGlobeEntityRenderer<StringEntity, StringEntityRenderer.State> {
 
 	public static final Identifier TEXTURE = BigGlobeMod.modID("textures/entity/string.png");

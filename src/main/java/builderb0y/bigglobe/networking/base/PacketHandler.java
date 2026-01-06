@@ -1,6 +1,6 @@
 package builderb0y.bigglobe.networking.base;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import io.netty.buffer.Unpooled;
 
 import net.minecraft.network.PacketByteBuf;
 
@@ -11,7 +11,7 @@ public interface PacketHandler {
 	}
 
 	public default PacketByteBuf buffer() {
-		PacketByteBuf buffer = PacketByteBufs.create();
+		PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 		buffer.writeByte(this.getId());
 		return buffer;
 	}

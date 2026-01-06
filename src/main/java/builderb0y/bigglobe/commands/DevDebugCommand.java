@@ -5,7 +5,8 @@ import java.util.Comparator;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.registry.RegistryKeys;
@@ -30,7 +31,7 @@ import builderb0y.bigglobe.versions.RegistryVersions;
 public class DevDebugCommand {
 
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		if (!FabricLoader.getInstance().isDevelopmentEnvironment()) return;
+		if (FMLEnvironment.production) return;
 		dispatcher.register(
 			CommandManager
 			.literal(BigGlobeMod.MODID + ":debug")

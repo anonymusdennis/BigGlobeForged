@@ -1,13 +1,13 @@
 package builderb0y.bigglobe.rendering.lods;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import net.minecraft.util.math.ColorHelper;
 
 import builderb0y.bigglobe.rendering.NativeMemory;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class CompactVertexConsumer extends VersionedVertexConsumer {
 
 	public final NativeMemory memory;

@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.rendering.lods;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.render.RenderLayer;
@@ -12,7 +12,7 @@ import builderb0y.bigglobe.util.SafeCloseable;
 import builderb0y.bigglobe.rendering.lods.LodPasses.Geometry;
 import builderb0y.bigglobe.versions.RenderVersions;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public record SidedLodPasses(
 	@Nullable Pass opaque,
 	@Nullable Pass translucent
@@ -55,7 +55,7 @@ implements SafeCloseable {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static record Builder(
 		SidedVertexConsumer opaque,
 		SidedVertexConsumer translucent

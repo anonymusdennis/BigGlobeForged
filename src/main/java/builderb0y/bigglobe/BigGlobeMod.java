@@ -8,12 +8,18 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Lifecycle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.apache.commons.io.file.PathUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +73,8 @@ import builderb0y.bigglobe.versions.IdentifierVersions;
 import builderb0y.bigglobe.versions.RegistryVersions;
 import builderb0y.scripting.parsing.ExpressionParser;
 
-public class BigGlobeMod implements ModInitializer {
+@Mod(BigGlobeMod.MODID)
+public class BigGlobeMod {
 
 	public static final String
 		MODID   = "bigglobe",
@@ -83,8 +90,7 @@ public class BigGlobeMod implements ModInitializer {
 	public static BetterRegistry.Lookup currentRegistries;
 	public static ResourceManager currentResourceManager;
 
-	@Override
-	public void onInitialize() {
+	public BigGlobeMod(IEventBus modEventBus, ModContainer modContainer) {
 		LOGGER.info("Initializing...");
 		BigGlobeConfig.init();
 
@@ -119,36 +125,47 @@ public class BigGlobeMod implements ModInitializer {
 
 		Map<EntityType<?>, Object> restrictions = SpawnRestriction_BackingMapAccess.bigglobe_getRestrictions();
 		restrictions.putIfAbsent(EntityType.ZOGLIN, restrictions.get(EntityType.HOGLIN));
-		ServerLifecycleEvents.SERVER_STARTING.register((MinecraftServer server) -> {
-			currentServer = server;
-			currentRegistries = new BetterRegistry.Lookup() {
 
-				@Override
-				public <T> BetterRegistry<T> getRegistry(RegistryKey<Registry<T>> key) {
-					return new BetterHardCodedRegistry<>(
-						RegistryVersions.getRegistry(
-							server.getRegistryManager(),
-							key
-						)
-					);
-				}
-			};
-			currentResourceManager = new DelegatingResourceManager(server::getResourceManager);
-		});
-		ServerLifecycleEvents.SERVER_STOPPED.register((MinecraftServer server) -> {
-			currentServer = null;
-			currentRegistries = null;
-			currentResourceManager = null;
-		});
+		// Register for server events
+		NeoForge.EVENT_BUS.addListener(this::onServerStarting);
+		NeoForge.EVENT_BUS.addListener(this::onServerStopped);
+
 		if (REGEN_WORLDS) {
 			LOGGER.error("################################################################");
 			LOGGER.error("Warning! -D" + MODID + ".regenWorlds is set to true in your java arguments!");
 			LOGGER.error("THIS WILL DELETE EVERYTHING IN YOUR WORLDS!");
 			LOGGER.error("If you care about your worlds, CLOSE THE GAME NOW AND REMOVE THIS FROM YOUR JAVA ARGUMENTS!");
 			LOGGER.error("################################################################");
-			ServerLifecycleEvents.SERVER_STARTING.register(BigGlobeMod::regenWorlds);
 		}
 		LOGGER.info("Done initializing.");
+	}
+
+	public void onServerStarting(ServerStartingEvent event) {
+		MinecraftServer server = event.getServer();
+		currentServer = server;
+		currentRegistries = new BetterRegistry.Lookup() {
+
+			@Override
+			public <T> BetterRegistry<T> getRegistry(RegistryKey<Registry<T>> key) {
+				return new BetterHardCodedRegistry<>(
+					RegistryVersions.getRegistry(
+						server.getRegistryManager(),
+						key
+					)
+				);
+			}
+		};
+		currentResourceManager = new DelegatingResourceManager(server::getResourceManager);
+
+		if (REGEN_WORLDS) {
+			regenWorlds(server);
+		}
+	}
+
+	public void onServerStopped(ServerStoppedEvent event) {
+		currentServer = null;
+		currentRegistries = null;
+		currentResourceManager = null;
 	}
 
 	public static MinecraftServer getCurrentServer() {
@@ -172,7 +189,7 @@ public class BigGlobeMod implements ModInitializer {
 	}
 
 	public static <T> BetterRegistry<T> getClientRegistry(RegistryKey<? extends Registry<? extends T>> key) {
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+		if (FMLEnvironment.dist == Dist.CLIENT) {
 			return getClientRegistry0(key);
 		}
 		else {
@@ -180,7 +197,7 @@ public class BigGlobeMod implements ModInitializer {
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static <T> BetterRegistry<T> getClientRegistry0(RegistryKey<? extends Registry<? extends T>> key) {
 		ClientWorld world = MinecraftClient.getInstance().world;
 		if (world != null) {
@@ -210,8 +227,13 @@ public class BigGlobeMod implements ModInitializer {
 		return IdentifierVersions.vanilla(path);
 	}
 
+	/**
+	 * Creates a new registry. Note: In NeoForge, custom registries should be
+	 * registered via NewRegistryEvent or DeferredRegister for full functionality.
+	 * This method creates a simple registry for internal use.
+	 */
 	public static <T> SimpleRegistry<T> newRegistry(RegistryKey<Registry<T>> key) {
-		return FabricRegistryBuilder.from(new SimpleRegistry<>(key, Lifecycle.experimental())).buildAndRegister();
+		return new SimpleRegistry<>(key, Lifecycle.experimental());
 	}
 
 	public static void regenWorlds(MinecraftServer server) {

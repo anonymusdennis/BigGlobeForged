@@ -1,8 +1,8 @@
 package builderb0y.bigglobe.versions;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
@@ -13,7 +13,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.util.math.Vec3d;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderVersions {
 
 	//frapi doesn't provide this for some reason,

@@ -1,7 +1,7 @@
 package builderb0y.bigglobe.rendering.lods;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 
@@ -12,7 +12,7 @@ import builderb0y.bigglobe.config.BigGlobeConfig;
 import builderb0y.bigglobe.versions.HeightLimitViewVersions;
 import builderb0y.bigglobe.versions.RenderVersions;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class LodFrustum {
 
 	public FrustumIntersection
